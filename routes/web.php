@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AcademicClassController;
 use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
 
@@ -13,4 +14,7 @@ Route::middleware('guest')->group(function () {
 Route::middleware('auth')->group(function () {
     Route::post('/logout', [AuthController::class, 'destroy'])->name('logout');
     Route::inertia('/dashboard', 'dashboard')->name('dashboard');
+
+    Route::resource('classes', AcademicClassController::class)
+        ->only(['index', 'store', 'update', 'destroy']);
 });

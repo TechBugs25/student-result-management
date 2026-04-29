@@ -33,15 +33,9 @@ export default function Login() {
 
     return (
         <>
-            <Head title="Login">
-                <link rel="preconnect" href="https://fonts.bunny.net" />
-                <link
-                    href="https://fonts.bunny.net/css?family=inter:400,500,600"
-                    rel="stylesheet"
-                />
-            </Head>
+            <Head title="Login" />
 
-            <div className="flex min-h-screen items-center justify-center bg-gray-50 p-6 font-['Inter'] transition-colors duration-300 dark:bg-gray-950">
+            <div className="flex min-h-screen items-center justify-center bg-gray-50 p-6 transition-colors duration-300 dark:bg-gray-950">
                 {/* Theme Toggle Button */}
                 <div className="absolute top-6 right-6">
                     <button
@@ -82,7 +76,7 @@ export default function Login() {
                                 htmlFor="email"
                                 className="block text-sm font-medium text-gray-700 dark:text-gray-300"
                             >
-                                Email address
+                                Email address <span className="text-red-500">*</span>
                             </label>
                             <div className="mt-2">
                                 <input
@@ -107,7 +101,7 @@ export default function Login() {
                                 htmlFor="password"
                                 className="block text-sm font-medium text-gray-700 dark:text-gray-300"
                             >
-                                Password
+                                Password <span className="text-red-500">*</span>
                             </label>
                             <div className="relative mt-2">
                                 <input

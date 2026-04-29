@@ -10,14 +10,8 @@ export default function Welcome() {
 
     return (
         <>
-            <Head title="Welcome">
-                <link rel="preconnect" href="https://fonts.bunny.net" />
-                <link
-                    href="https://fonts.bunny.net/css?family=inter:400,500,600"
-                    rel="stylesheet"
-                />
-            </Head>
-            <div className="flex min-h-screen flex-col items-center justify-center bg-white p-6 font-['Inter'] text-gray-900 transition-colors duration-300 dark:bg-gray-950 dark:text-gray-100">
+            <Head title="Welcome" />
+            <div className="flex min-h-screen flex-col items-center justify-center bg-white p-6 text-gray-900 transition-colors duration-300 dark:bg-gray-950 dark:text-gray-100">
 
                 {/* Theme Toggle Button */}
                 <div className="absolute top-6 right-6">

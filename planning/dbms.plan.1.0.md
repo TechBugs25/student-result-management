@@ -22,11 +22,12 @@ Handles authentication for Administrators, Teachers, and Students.
 ---
 
 ### 2. `academic_classes`
-Represents a grade level or specific group (e.g., "Grade 10").
+Represents a grade level or specific group (e.g., "Class 10").
 - **[NEW]** `AcademicClass` model and migration
   - `id` (string, UUID, primary key)
-  - `name` (string) - e.g., "Grade 10"
-  - `section` (string, nullable) - e.g., "A"
+  - `name` (string, **unique**) - e.g., "Class 10"
+  - `section` (string) - e.g., "A"
+  - **Unique constraint:** `(name, section)` — composite unique index
   - `created_at` (timestamp)
   - `updated_at` (timestamp)
 
