@@ -1,4 +1,4 @@
-import { Head } from '@inertiajs/react';
+import { Head, Link } from '@inertiajs/react';
 import { useTheme } from '../components/theme-provider';
 
 export default function Welcome() {
@@ -48,13 +48,9 @@ export default function Welcome() {
                     </p>
 
                     <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
-                        <button className="rounded-md bg-gray-900 px-6 py-2.5 text-sm font-medium text-white transition-colors hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:ring-offset-2 dark:bg-gray-100 dark:text-gray-900 dark:hover:bg-gray-200 dark:focus:ring-gray-100 dark:focus:ring-offset-gray-950">
-                            Administrator Login
-                        </button>
-
-                        <button className="rounded-md border border-gray-300 bg-white px-6 py-2.5 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:ring-offset-2 dark:border-gray-700 dark:bg-gray-950 dark:text-gray-300 dark:hover:bg-gray-900 dark:focus:ring-gray-100 dark:focus:ring-offset-gray-950">
-                            Student Portal
-                        </button>
+                        <Link href="/login" className="rounded-md bg-gray-900 px-8 py-2.5 text-sm font-medium text-white transition-colors hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:ring-offset-2 dark:bg-gray-100 dark:text-gray-900 dark:hover:bg-gray-200 dark:focus:ring-gray-100 dark:focus:ring-offset-gray-950">
+                            Login
+                        </Link>
                     </div>
                 </div>
 
