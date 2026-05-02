@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AcademicClassController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\StudentController;
 use Illuminate\Support\Facades\Route;
 
 Route::inertia('/', 'welcome')->name('home');
@@ -16,5 +17,8 @@ Route::middleware('auth')->group(function () {
     Route::inertia('/dashboard', 'dashboard')->name('dashboard');
 
     Route::resource('classes', AcademicClassController::class)
+        ->only(['index', 'store', 'update', 'destroy']);
+
+    Route::resource('students', StudentController::class)
         ->only(['index', 'store', 'update', 'destroy']);
 });
