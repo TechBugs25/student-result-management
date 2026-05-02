@@ -8,15 +8,23 @@ use Inertia\Inertia;
 
 class AcademicClassController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $classes = AcademicClass::withCount('students')
-            ->orderBy('name')
+        $query = AcademicClass::withCount('students');
+
+        if ($search = $request->input('search')) {
+            $query->where('name', 'like', "%{$search}%")
+                  ->orWhere('section', 'like', "%{$search}%");
+        }
+
+        $classes = $query->orderBy('name')
             ->orderBy('section')
-            ->get();
+            ->paginate(10)
+            ->withQueryString();
 
         return Inertia::render('classes/index', [
             'classes' => $classes,
+            'filters' => ['search' => $search],
         ]);
     }
 

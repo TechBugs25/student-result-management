@@ -10,8 +10,13 @@ class Student extends Model
     use HasUuids;
 
     protected $fillable = [
-        'user_id', 'academic_class_id', 'admission_number', 
-        'first_name', 'last_name', 'date_of_birth', 'gender'
+        'first_name',
+        'last_name',
+        'admission_number',
+        'academic_class_id',
+        'user_id',
+        'date_of_birth',
+        'gender',
     ];
 
     protected function casts(): array

@@ -17,6 +17,8 @@ type Student = {
     academic_class: AcademicClass;
     date_of_birth: string;
     gender: 'male' | 'female';
+    user_id: string | null;
+    user?: { id: string, name: string, email: string };
     created_at: string;
 };
 
@@ -27,6 +29,7 @@ type FormData = {
     academic_class_id: string;
     date_of_birth: string;
     gender: string;
+    user_id: string;
 };
 
 type PaginatedData<T> = {
@@ -42,6 +45,7 @@ type PaginatedData<T> = {
 type Props = {
     students: PaginatedData<Student>;
     classes: AcademicClass[];
+    availableUsers: { id: string, name: string, email: string }[];
     filters?: { search?: string };
     flash?: { success?: string };
 };
@@ -55,6 +59,7 @@ const emptyForm: FormData = {
     academic_class_id: '',
     date_of_birth: '',
     gender: '',
+    user_id: '',
 };
 
 function formatDate(dateStr: string) {
@@ -66,7 +71,7 @@ function formatDate(dateStr: string) {
     });
 }
 
-export default function StudentsIndex({ students, classes, filters, flash }: Props) {
+export default function StudentsIndex({ students, classes, availableUsers, filters, flash }: Props) {
     const [modal, setModal] = useState<ModalMode>(null);
     const [editTarget, setEditTarget] = useState<Student | null>(null);
     const [deleteTarget, setDeleteTarget] = useState<Student | null>(null);
@@ -101,6 +106,7 @@ export default function StudentsIndex({ students, classes, filters, flash }: Pro
             academic_class_id: student.academic_class_id,
             date_of_birth: student.date_of_birth.split('T')[0],
             gender: student.gender,
+            user_id: student.user_id || '',
         });
         form.clearErrors();
         setEditTarget(student);
@@ -238,7 +244,7 @@ export default function StudentsIndex({ students, classes, filters, flash }: Pro
                                         <th className="px-6 py-3.5 text-left text-xs font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400">Admission No.</th>
                                         <th className="px-6 py-3.5 text-left text-xs font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400">Class</th>
                                         <th className="px-6 py-3.5 text-left text-xs font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400">Gender</th>
-                                        <th className="px-6 py-3.5 text-left text-xs font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400">Date of Birth</th>
+                                        <th className="px-6 py-3.5 text-left text-xs font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400">Linked User</th>
                                         <th className="px-6 py-3.5 text-right text-xs font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400">Actions</th>
                                     </tr>
                                 </thead>
@@ -265,7 +271,20 @@ export default function StudentsIndex({ students, classes, filters, flash }: Pro
                                             <td className="px-6 py-4">
                                                 <GenderBadge gender={student.gender} />
                                             </td>
-                                            <td className="px-6 py-4 text-sm text-gray-500 dark:text-gray-400">{formatDate(student.date_of_birth)}</td>
+                                            <td className="px-6 py-4">
+                                                {student.user ? (
+                                                    <span className="inline-flex items-center gap-1.5 rounded-md px-2 py-1 text-xs font-medium text-emerald-700 bg-emerald-50 ring-1 ring-inset ring-emerald-600/20 dark:bg-emerald-400/10 dark:text-emerald-400 dark:ring-emerald-400/20">
+                                                        <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
+                                                            <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
+                                                        </svg>
+                                                        {student.user.name}
+                                                    </span>
+                                                ) : (
+                                                    <span className="inline-flex items-center gap-1.5 rounded-md px-2 py-1 text-xs font-medium text-gray-600 bg-gray-50 ring-1 ring-inset ring-gray-500/20 dark:bg-gray-400/10 dark:text-gray-400 dark:ring-gray-400/20">
+                                                        Unlinked
+                                                    </span>
+                                                )}
+                                            </td>
                                             <td className="px-6 py-4 text-right">
                                                 <div className="flex items-center justify-end gap-2">
                                                     <button
@@ -412,6 +431,25 @@ export default function StudentsIndex({ students, classes, filters, flash }: Pro
                                                 ))}
                                             </select>
                                             {form.errors.academic_class_id && <p className="mt-1 text-xs text-red-500">{form.errors.academic_class_id}</p>}
+                                        </div>
+                                        <div className="sm:col-span-2">
+                                            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Link User Account (Optional)</label>
+                                            <select value={form.data.user_id} onChange={(e) => form.setData('user_id', e.target.value)} className="block w-full rounded-lg border-0 py-2.5 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 dark:bg-gray-800/50 dark:text-white dark:ring-gray-700 dark:focus:ring-indigo-500 transition-all duration-200">
+                                                <option value="">— No User Linked —</option>
+                                                {/* If editing and a user is currently linked, show it. Otherwise show available ones */}
+                                                {modal === 'edit' && editTarget?.user && (
+                                                    <option value={editTarget.user_id || ''}>
+                                                        {editTarget.user.name} ({editTarget.user.email}) - Current
+                                                    </option>
+                                                )}
+                                                {availableUsers.map((user) => (
+                                                    <option key={user.id} value={user.id}>
+                                                        {user.name} ({user.email})
+                                                    </option>
+                                                ))}
+                                            </select>
+                                            <p className="mt-1.5 text-xs text-gray-500 dark:text-gray-400">Link a user account so this student can log in and view their results.</p>
+                                            {form.errors.user_id && <p className="mt-1 text-xs text-red-500">{form.errors.user_id}</p>}
                                         </div>
                                     </div>
                                 </div>
